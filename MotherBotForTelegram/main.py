@@ -4,9 +4,9 @@ from telebot import types
 from telebot import callback_data
 from time import sleep
 import emoji
-# 👉 🙏 👆 👇 😅 👋 🙌 ✅ ☺️ ❗ ️‼️ ✌️ 👌 ✊ 👨‍💻  🤖 😉
+# 👉 🙏 👆 👇 😅 👋 🙌 ✅ ☺️ ❗ ️‼️ ✌️ 👌 ✊ 👨‍💻  🤖 😉  ☝️
 
-bot = telebot.TeleBot('5430380851:AAFEEwSPbUmpm5-FKBzkEUz4eCQ9BWiF_gM')
+bot = telebot.TeleBot('5430380851:AAFTTbhrJ9f2cuv2uMSGNxWYqIPPdG_M66c')
 
 
 # ссылка для "Как Python связан с Telegram?"
@@ -23,15 +23,61 @@ def step2(call):
     markup = telebot.types.InlineKeyboardMarkup()
 
     if call.data == 'firsttoken':
-        firsttoken_message = " Первая клавиша"
-        msg = bot.send_message(call.message.chat.id, firsttoken_message, reply_markup = markup)
-    elif call.data == 'secondtoken':
-        secondtoken_message = "Вторая"
-        msg = bot.send_message(call.message.chat.id, secondtoken_message, reply_markup = markup)
-    elif call.data == 'thirdtoken':
-        thirdtoken_message = "Третья"
-        msg = bot.send_message(call.message.chat.id, thirdtoken_message, reply_markup = markup)
+        pic_2 = open("BotFather.jpg", "rb")
+        bot.send_photo(call.message.chat.id, pic_2)
+        firsttoken_message = "СОЗДАНИЕ: \nБот приветствует нас вот таким сообщением, как не сложно догадаться - нам необходима команда /newbot\n" \
+                             "В этом же боте происходит редактирование всех наших ботов.\n\n" \
+                             "В ответ на команду бот пишет:\n" \
+                             "'Alright, a new bot. How are we going to call it? Please choose a name for your bot.'\n\n" \
+                             "Выбираем имя, оно будет основным, но не будет являться id! Потому что следующим сообщением @BotFather попросит:\n" \
+                             "'Good. Now let's choose a username for your bot. It must end in `bot`. Like this, for example: TetrisBot or tetris_bot.'\n\n" \
+                             "Если на этом этапе у вас все получится, то вам прийдет готовый token (к слову, его тоже можно будет сменить через @BotFather):\n" \
+                             "'Use this token to access the HTTP API:\n5543492408:AAFKGXowK8CV5Q4IFOGzDTCTR4OAaL_tU2I'\n\n"
 
+        msg = bot.send_message(call.message.chat.id, firsttoken_message,  reply_markup=markup)
+        pic_3 = open("CreateBot.jpg", "rb")
+        bot.send_photo(call.message.chat.id, pic_3)
+        msg = bot.send_message(call.message.chat.id, "Пора перейти к клавише 'Подключение' ☝️")
+
+
+    elif call.data == 'secondtoken':
+        secondtoken_message = "ПОДКЛЮЧЕНИЕ:\nДалее в нашем Python проекте необходимо написать две строчки:\n" \
+                              "bot = telebot.TeleBot('наш token') - подключение бота к проекту,\n" \
+                              "например: bot = telebot.TeleBot('5543492408:AAFKGXowK8CV5Q4IFOGzDTCTR4OAaL_tU2I')\n\n" \
+                              "И строку: bot.polling(none_stop=True)\n\n" \
+                              "Чат-боты должны получать уведомления от соцсети моментально. " \
+                              "Они не могут проверять обновления каждую секунду, это неэффективно.\n\n" \
+                              "Такой подход, когда раз в n секунд опрашивается сторонний сервис, называется polling.\n\n" \
+                              "Все, что будет находиться между этими двумя строчками и станет нашим ботом ✊"
+
+        msg = bot.send_message(call.message.chat.id, secondtoken_message, reply_markup = markup)
+        msg = bot.send_message(call.message.chat.id, "Пора перейти к клавише 'Редактирование' ☝️")
+
+
+
+    elif call.data == 'thirdtoken':
+        thirdtoken_message = "РЕДАКТИРОВАНИЕ: \nКак я уже говорил - все настройки и изменения происходят благодаря @BotFather\n" \
+                             "прописываем команду /mybots, выбираем нашего бота по id\n" \
+                             "и переходим во вкладку Edit Bot, тут мы можем менять имя, описание, приветственное сообщение, picture и редактировать команды" \
+                             "(Опять же для самых внимательных - у нас уже есть команда 'start', тут мы можем сделать отдельное меню для отображения таких команд."
+        msg = bot.send_message(call.message.chat.id, thirdtoken_message, reply_markup = markup)
+        msg = bot.send_message(call.message.chat.id, "Уверен, что теперь мы готовы идти дальше 😉👇 ", reply_markup=markup)
+
+#MENU
+@bot.message_handler(commands=['menu'])
+def menu(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn1 = types.KeyboardButton('1. Вступление')
+    btn2 = types.KeyboardButton('2. Получение token')
+    btn3 = types.KeyboardButton('3. Функция "start"')
+    btn4 = types.KeyboardButton('4. Про buttons')
+    btn5 = types.KeyboardButton('5. Добавление ссылок')
+    btn6 = types.KeyboardButton('6. Отправляем файлы')
+    btn7 = types.KeyboardButton('7. Подключаем к CRM')
+    btn8 = types.KeyboardButton('8. Работа с СБД')
+    btn9 = types.KeyboardButton('Содержание')
+    markup.add(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9)
+    bot.send_dice(message.chat.id, reply_markup=markup)
 
 #START
 @bot.message_handler(commands=['start'])
@@ -50,8 +96,6 @@ def start(message):
 @bot.message_handler(content_types=['text'])
 def mess(message):
     get_message_bot = message.text.strip()
-
-
 
     # 1. Вступление ----------------------------------------------------------------------
     if get_message_bot == "👨‍💻Начнем":
@@ -148,8 +192,8 @@ def mess(message):
 
     if message.text == "Хочу получить ссылку":
         open_documentation(message)
-
     # 1. Вступление ----------------------------------------------------------------------
+
 
     # 2. Получение token ----------------------------------------------------------------------
     if get_message_bot == "Что такое token?":
@@ -165,18 +209,11 @@ def mess(message):
 
         markup2 = types.InlineKeyboardMarkup(row_width=1)
         markup2.add(types.InlineKeyboardButton("Создание", callback_data ='firsttoken'),
-                    types.InlineKeyboardButton("Редактирование", callback_data ='secondtoken'),
-                    types.InlineKeyboardButton("Подключение", callback_data ='thirdtoken'))
+                    types.InlineKeyboardButton("Подключение", callback_data ='secondtoken'),
+                    types.InlineKeyboardButton("Редактирование", callback_data ='thirdtoken'))
         second_message = "Для получения нашего ключа, необходимо написать *@BotFather*"
         bot.send_message(message.chat.id, second_message, parse_mode='Markdown', reply_markup=markup2)
         sleep(0.5)
-
-
-
-
-
-
-
     # 2. Получение token ----------------------------------------------------------------------
 
     # 3. Функция "start" ----------------------------------------------------------------------
@@ -218,7 +255,7 @@ def mess(message):
         btn2 = types.KeyboardButton('О авторе курса')
         btn3 = types.KeyboardButton('Содержание')
         markup.add(btn1, btn2, btn3)
-        send_mess = "*"
+        send_mess = "Рад снова тебя видеть здесь 😅😉"
         bot.send_message(message.chat.id, send_mess, parse_mode='html', reply_markup=markup)
 
     if get_message_bot == '2. Получение token':
@@ -234,8 +271,8 @@ def mess(message):
 
         markup2 = types.InlineKeyboardMarkup(row_width=1)
         markup2.add(types.InlineKeyboardButton("Создание", callback_data='firsttoken'),
-                    types.InlineKeyboardButton("Редактирование", callback_data='secondtoken'),
-                    types.InlineKeyboardButton("Подключение", callback_data='thirdtoken'))
+                    types.InlineKeyboardButton("Подключение", callback_data='secondtoken'),
+                    types.InlineKeyboardButton("Редактирование", callback_data='thirdtoken'))
         second_message = "Для получения нашего ключа, необходимо написать *@BotFather*"
         bot.send_message(message.chat.id, second_message, parse_mode='Markdown', reply_markup=markup2)
         sleep(0.5)

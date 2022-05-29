@@ -5,7 +5,7 @@ from telebot import callback_data
 from time import sleep
 import random
 import emoji
-# 👉 🙏 👆 👇 😅 👋 🙌 ☺️ ❗ ️‼️ ✌️ 👌 ✊ 👨‍💻  🤖 😉  ☝️ ❤️
+# 👉 🙏 👆 👇 😅 👋 🙌 ☺️ ❗ ️‼️ ✌️ 👌 ✊ 👨‍💻  🤖 😉  ☝️ ❤️ 💪
 
 bot = telebot.TeleBot('5430380851:AAE70eeR3jFdxuM_BlWjWLNgsDEGhWRqC7o')
 
@@ -72,38 +72,84 @@ def step(call):
 
 
 
-    # Кнопка для 3. Команда start ----------------------------------------------------------------------
+    # Кнопка для 3. Команды и функции ----------------------------------------------------------------------
     elif call.data == 'theorystart':
         markup.add(types.InlineKeyboardButton("Пример 1", callback_data='firstexamplestart'),
                    types.InlineKeyboardButton("Пример 2", callback_data='secondexamplestart'))
-        theorystart_message = "Функции могут исполнять какие-то действия и возвращать нам результат."
+        theorystart_message = "Команды представляют собой более гибкий способ общения с ботом. \n" \
+                              "*Рекомендуется следующий синтаксис:*\n" \
+                              "_/команда [необязательный] [аргумент]_\n\n" \
+                              "☝️ Команда должна начинаться с символа косой черты «/» и не может быть длиннее 32 символов. " \
+                              "Команды могут состоять из букв латинского алфавита, цифр и подчёркивания. \n\n*Несколько примеров:*\n" \
+                              "_get_messages_stats_\n" \
+                              "_set_timer 10min Alarm!_\n" \
+                              "_get_timezone London, UK_\n\n"
         msg = bot.send_message(call.message.chat.id, theorystart_message, parse_mode='Markdown', reply_markup=markup)
 
     elif call.data == 'firstexamplestart':
-        firstexamplestart_message = "Например эта простейшая функция выводит на экран рандомное число:"
+        firstexamplestart_message = "Например эта простейшая команда выводит на экран рандомное число:"
         msg = bot.send_message(call.message.chat.id, firstexamplestart_message, parse_mode='Markdown')
         pic_5 = open("example1.jpg", "rb")
         bot.send_photo(call.message.chat.id,pic_5)
+        firstexample2start_message = "*1.* Мы задаем название команды.\n" \
+                                     "*2.* Начинаем писать функцию для ее обработки.\n" \
+                                     "*3.* Генерим рандомное число от 1 до 1000\n" \
+                                     "*4.* Поручаем боту отправить сообщение с нашим числом (переведенным в строковый тип данных и дублируем вызов команды"
+        msg = bot.send_message(call.message.chat.id, firstexample2start_message, parse_mode='Markdown')
         msg = bot.send_message(call.message.chat.id, "click me 👉 /example1", parse_mode='Markdown')
 
     elif call.data == 'secondexamplestart':
-        secondexamplestart_message = "Эта функция посложнее, мы считываем число введенное пользователем *(именно число)*" \
+        secondexamplestart_message = "Эта команда посложнее, мы считываем число введенное пользователем *(именно число)*" \
                                      "и возвращаем факториал от числа"
         msg = bot.send_message(call.message.chat.id, secondexamplestart_message, parse_mode='Markdown')
         pic_6 = open("example2.jpg", "rb")
         bot.send_photo(call.message.chat.id, pic_6)
+        secondexample2start_message = "*1-2.* Строчки аналогичны предыдущему примеру\n" \
+                                     "*3.* Специальное обращение бота, когда он отвечает на сообщение пользователя\n" \
+                                     "*6.* Мы создаем фунцию обрабатывающую текст введенный пользователем \n" \
+                                     "*7.* Кладем полученное сообщение в переменную x с типом данных str\n" \
+                                     "*8.* Проверяем через методы строк пришло ли на вход число\n" \
+                                      "*9.* Если было введено число и оно удовлетворяет условию, то переводим его в int-вое значение\n" \
+                                      "*10-13.* И вычисляем факториал числа простейшим образом\n" \
+                                      "*14-15.* Иначе просим пользователя перезапустить команду"
+        msg = bot.send_message(call.message.chat.id, secondexample2start_message, parse_mode='Markdown')
         msg = bot.send_message(call.message.chat.id, "touch me 👉 /example2", parse_mode='Markdown', reply_markup=markup)
 
     elif call.data == 'exitexample1':
         markup.add(types.InlineKeyboardButton("Пример 2", callback_data='secondexamplestart'))
         msg = bot.send_message(call.message.chat.id, "Отлично, двигаемся дальше 👇",reply_markup=markup)
 
-
     elif call.data == 'exitexample2':
         msg = bot.send_message(call.message.chat.id, "✅ Пора двигаться дальше 😉",reply_markup=markup)
-    # Кнопка для 3. Команда start ----------------------------------------------------------------------
+    # Кнопка для 3. Команды и функции ----------------------------------------------------------------------
+
+    # Кнопки 4. Бот отправляет ----------------------------------------------------------------------
+    elif call.data == 'theorybotsend':
+        markup.add(types.InlineKeyboardButton("Пример", callback_data='firstexamplebotsend'))
+        theorybotsend_message = "ТУТ БУДЕТ ТЕОРИЯ"
+        msg = bot.send_message(call.message.chat.id, theorybotsend_message, parse_mode='Markdown', reply_markup=markup)
+
+    elif call.data == 'firstexamplebotsend':
+        examplebotsend_message = "Вот примеры простейших объектов которые бот может отправлять пользователю:"
+        msg = bot.send_message(call.message.chat.id,  examplebotsend_message, parse_mode='Markdown')
+        pic_5 = open("example3.jpg", "rb")
+        bot.send_photo(call.message.chat.id, pic_5)
+        example2botsend_message = "*3.* Отправляем текст пользователю \n" \
+                                     "*5-6.* Открываем картинку из проекта и отправляем ее пользователю\n" \
+                                     "*8.* Бот отправляет заготовленный заранее контакт\n" \
+                                     "*10-11.* Аналогично картинке скачиваем в проект стикер и отправлем его"
+        msg = bot.send_message(call.message.chat.id, example2botsend_message, parse_mode='Markdown')
+        msg = bot.send_message(call.message.chat.id, " 👉 /example3", parse_mode='Markdown')
 
 
+
+    # Кнопки 4. Бот отправляет ----------------------------------------------------------------------
+
+    # Кнопки 5. KeyboardButton ----------------------------------------------------------------------
+    # Кнопки 5. KeyboardButton ----------------------------------------------------------------------
+
+    # Кнопки 6. InlineButton ----------------------------------------------------------------------
+    # Кнопки 6. InlineButton ----------------------------------------------------------------------
 
 
     # Кнопки для получения Донатов ----------------------------------------------------------------------
@@ -114,8 +160,22 @@ def step(call):
         msg = bot.send_message(call.message.chat.id, " Спасибо за оценку моей работы ❤️ ")
     # Кнопки для получения Донатов ----------------------------------------------------------------------
 
+# for example3, in shapter 'Бот отправляет'
+@bot.message_handler(commands=['example3'])
+def example3(message):
+    bot.send_message(message.chat.id, 'Вот тут мы отправляем текст')
 
-# Command for example1, in chapter 'Команда start'
+    pic = open("privetexample.jpg", "rb")
+    bot.send_photo(message.chat.id, pic)
+
+    bot.send_contact(message.chat.id, phone_number=79998887766, first_name="Бот Анатолий", last_name="Прокат NFT великов за биткоин")
+
+    sti = open("AnimatedStickerFrog.tgs", "rb")
+    bot.send_sticker(message.chat.id, sti)
+
+    bot.send_message(message.chat.id, "✅ Двигаемся вперед 💪")
+
+# for example1, in chapter 'Команды и функции'
 @bot.message_handler(commands=['example1'])
 def example1(message):
     markup = types.InlineKeyboardMarkup(row_width=1)
@@ -123,16 +183,16 @@ def example1(message):
     x = str(random.randint(1, 1000))
     bot.send_message(message.chat.id, x + "  try again /example1", reply_markup=markup)
 
-# Command for example2, in chapter 'Команда start'
+# for example2, in chapter 'Команды и функции'
 @bot.message_handler(commands=['example2'])
 def example2(message):
     markup = types.InlineKeyboardMarkup()
-    bot.reply_to(message, 'Посчитаем факториал числа: ')
+    bot.reply_to(message, 'Посчитаем факториал числа:\n(Не превышающего 1000) ')
 
     @bot.message_handler(content_types=['text'])
     def message_input(message):
         x = message.text
-        if x.isdigit() == True:
+        if x.isdigit() == True and 0 < int(x) <= 1000:
             temp = int(x)
             res = 1
             while temp > 0:
@@ -146,9 +206,6 @@ def example2(message):
 
 
     bot.register_next_step_handler(message, message_input)
-
-
-
 
 #MENU
 @bot.message_handler(commands=['menu'])
@@ -310,14 +367,16 @@ def mess(message):
         sleep(0.5)
     # 2. Получение token ----------------------------------------------------------------------
 
-    # 3. Команда "start" ----------------------------------------------------------------------
+    # 3. Команды и функции ----------------------------------------------------------------------
     if get_message_bot == "Команды и функции":
         markup1 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn1 = types.KeyboardButton("Бот отправляет")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "Token получен, библиотеки установлены, энтузиазмом заряжены - пора запускать бота!\n" \
-                        "Любой бот запускается с первой команды, которую нам и необходимо реализовать в этом разделе."
+        first_message = "Token получен, библиотеки установлены - пора запускать бота!\n\n" \
+                        "Любой бот запускается с первой команды, которую нам и необходимо реализовать в этом разделе. " \
+                        "\n\nДумаю, вы уже замечали, что большинство ботов начинаются с команды /start , " \
+                        "но это просто название, мы можем написать команду с любым функционалом."
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
 
@@ -325,20 +384,25 @@ def mess(message):
         markup2.add(types.InlineKeyboardButton("Теория", callback_data='theorystart'))
         bot.send_message(message.chat.id, "👇", parse_mode='Markdown', reply_markup=markup2)
         sleep(0.5)
-    # 3. Команда "start" ----------------------------------------------------------------------
+    # 3. Команды и функции ----------------------------------------------------------------------
 
-    # 4. Про buttons ----------------------------------------------------------------------
+    # 4. Бот отправляет ----------------------------------------------------------------------
     if get_message_bot == "Бот отправляет":
         markup1 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn1 = types.KeyboardButton("KeyboardButton")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "туть нужен текст"
+        first_message = "Умея создавать команды - пришло время научиться бота реагировать на них с помощью клавишь"
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
-    # 4. Про buttons ----------------------------------------------------------------------
 
-    # 5. Добавление ссылок ----------------------------------------------------------------------
+        markup2 = types.InlineKeyboardMarkup(row_width=1)
+        markup2.add(types.InlineKeyboardButton("Теория", callback_data='theorybotsend'))
+        bot.send_message(message.chat.id, "👇", parse_mode='Markdown', reply_markup=markup2)
+        sleep(0.5)
+    # 4. Бот отправляет ----------------------------------------------------------------------
+
+    # 5. KeyboardButton ----------------------------------------------------------------------
     if get_message_bot == "KeyboardButton":
         markup1 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn1 = types.KeyboardButton("InlineButton")
@@ -347,9 +411,9 @@ def mess(message):
         first_message = "туть нужен текст"
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
-    # 5. Добавление ссылок ----------------------------------------------------------------------
+    # 5. KeyboardButton ----------------------------------------------------------------------
 
-    # 6. Отправляем файлы ----------------------------------------------------------------------
+    # 6. InlineButton ----------------------------------------------------------------------
     if get_message_bot == "InlineButton":
         markup1 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn1 = types.KeyboardButton("Подключаем к CRM")
@@ -358,7 +422,7 @@ def mess(message):
         first_message = "туть нужен текст"
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
-    # 6. Отправляем файлы ----------------------------------------------------------------------
+    # 6. InlineButton ----------------------------------------------------------------------
 
     # 7. Подключаем к CRM ----------------------------------------------------------------------
     if get_message_bot == "Подключаем к CRM":
@@ -431,8 +495,10 @@ def mess(message):
         btn1 = types.KeyboardButton("Бот отправляет")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "Token получен, библиотеки установлены, энтузиазмом заряжены - пора запускать бота!\n" \
-                        "Любой бот запускается с первой команды, которую нам и необходимо реализовать в этом разделе."
+        first_message = "Token получен, библиотеки установлены - пора запускать бота!\n\n" \
+                        "Любой бот запускается с первой команды, которую нам и необходимо реализовать в этом разделе. " \
+                        "\n\nДумаю, вы уже замечали, что большинство ботов начинаются с команды /start , " \
+                        "но это просто название, мы можем написать команду с любым функционалом."
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
 
@@ -446,8 +512,13 @@ def mess(message):
         btn1 = types.KeyboardButton("KeyboardButton")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "туть нужен текст"
+        first_message = "Умея создавать команды - пришло время научиться бота реагировать на них с помощью клавишь"
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
+        sleep(0.5)
+
+        markup2 = types.InlineKeyboardMarkup(row_width=1)
+        markup2.add(types.InlineKeyboardButton("Теория", callback_data='theorybotsend'))
+        bot.send_message(message.chat.id, "👇", parse_mode='Markdown', reply_markup=markup2)
         sleep(0.5)
 
     if get_message_bot =='5. KeyboardButton':

@@ -126,7 +126,9 @@ def step(call):
     # Кнопки 4. Бот отправляет ----------------------------------------------------------------------
     elif call.data == 'theorybotsend':
         markup.add(types.InlineKeyboardButton("Пример", callback_data='firstexamplebotsend'))
-        theorybotsend_message = "ТУТ БУДЕТ ТЕОРИЯ"
+        theorybotsend_message = "Для взаимодействия бота с пользовательским чатом, а бот реагирует именно на *chat.id* - нам понадобится функция\n\n" \
+                                "*bot.send_действие()*\n\n" \
+                                "С помощью этой функции мы можем отправлять от лица бота разные файлы, картинки, стикеры, контакты и т.д."
         msg = bot.send_message(call.message.chat.id, theorybotsend_message, parse_mode='Markdown', reply_markup=markup)
 
     elif call.data == 'firstexamplebotsend':
@@ -140,15 +142,105 @@ def step(call):
                                      "*10-11.* Аналогично картинке скачиваем в проект стикер и отправлем его"
         msg = bot.send_message(call.message.chat.id, example2botsend_message, parse_mode='Markdown')
         msg = bot.send_message(call.message.chat.id, " 👉 /example3", parse_mode='Markdown')
-
-
-
     # Кнопки 4. Бот отправляет ----------------------------------------------------------------------
 
+
     # Кнопки 5. KeyboardButton ----------------------------------------------------------------------
+    elif call.data == 'theoryKeyboardButton':
+        markup.add(types.InlineKeyboardButton("Пример 1", callback_data='firstexampleKeyboardButton'), types.InlineKeyboardButton("Пример 2", callback_data='secondexampleKeyboardButton'))
+        theoryKeyboardButton_message = "При передаче сервером ответа есть возможность передать команду на отображение специальной клавиатуры с предустановленными вариантами " \
+                                       "ответа используя:\n\n*ReplyKeyboardMarkup()*\n\nКлиент Telegram, получив сообщение, отобразит пользователю вашу клавиатуру. " \
+                                       "Нажатие на клавишу сразу же отправит на сервер соответствующую команду. " \
+                                       "\n\nТаким образом можно значительно упростить взаимодействие робота с пользователем. " \
+                                       "На данный момент для отображения на клавише могут использоваться эмодзи и текст. \n\nВот несколько примеров таких клавиатур:"
+        msg = bot.send_message(call.message.chat.id, theoryKeyboardButton_message, parse_mode='Markdown', reply_markup=markup)
+
+    elif call.data == 'firstexampleKeyboardButton':
+        exampleKetboardButton_message = "В этом примере мы просто создаем две клавиши и возвращаем те или иные сообщения в зависимости от нажатия."
+        msg = bot.send_message(call.message.chat.id, exampleKetboardButton_message, parse_mode='Markdown')
+        pic_5 = open("example4.jpg", "rb")
+        bot.send_photo(call.message.chat.id, pic_5)
+        example2KetboardButton_message = "*3.* Мы объявляем форму для клавиатуры и задаем размер (кол-во клавишь) на экране\n" \
+                                  "*4-5.* Создаем сами клавиши через переменные\n" \
+                                  "*7-8.* Добавляем в единую форму и просим бота отобразить их через *replay_markup=имя формы*, " \
+                                        "для этого действия обязательно использовать какой-то из *bot.send_действие*\n" \
+                                  "*10-11.* Создаем функцию обрабатывающую введенные клавиши с типом text\n" \
+                                         "12. Используем метод *строка.strip() для удаления всех пробелов (проверка на дурака)*\n" \
+                                         "14-18. В зависимости от нажатой клавиши возвращаем пользователею какое-то выбранное действие"
+
+        msg = bot.send_message(call.message.chat.id, example2KetboardButton_message, parse_mode='Markdown')
+        msg = bot.send_message(call.message.chat.id, " 👉 /example4", parse_mode='Markdown')
+
+    elif call.data == 'exitfirstexampleKeyboardButton':
+        markup.add(types.InlineKeyboardButton("Пример 1", callback_data='firstexampleKeyboardButton'),
+                   types.InlineKeyboardButton("Пример 2", callback_data='secondexampleKeyboardButton'))
+        msg = bot.send_message(call.message.chat.id, "Магия свершилась 🪄", parse_mode='Markdown',
+                               reply_markup=markup)
+
+    elif call.data == 'secondexampleKeyboardButton':
+        exampleKetboardButton_message = "А это пример создания мини викторины."
+        msg = bot.send_message(call.message.chat.id, exampleKetboardButton_message, parse_mode='Markdown')
+        pic_5 = open("example5.jpg", "rb")
+        bot.send_photo(call.message.chat.id, pic_5)
+        example2KetboardButton_message = "В целом эта часть кода не требует пояснений кроме совей последней строчки, " \
+                                         'в 10 строке есть параметр *parse_mode=* он позволяет выбрать форматирование' \
+                                         'текста, поддерживаются два варианта:\n1. *"Markdown"*\n2. *"HTML"*\n'
+
+
+        msg = bot.send_message(call.message.chat.id, example2KetboardButton_message, parse_mode='Markdown')
+        msg = bot.send_message(call.message.chat.id, " 👉 /example5", parse_mode='Markdown')
+
+    elif call.data == 'exitsecondexampleKeyboardButton':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn1 = types.KeyboardButton("InlineButton")
+        btn2 = types.KeyboardButton("Содержание")
+        markup.add(btn1, btn2)
+        msg = bot.send_message(call.message.chat.id, "✅ Движение жизнь, идем дальше 👇",reply_markup=markup)
     # Кнопки 5. KeyboardButton ----------------------------------------------------------------------
 
     # Кнопки 6. InlineButton ----------------------------------------------------------------------
+    elif call.data == 'theoryInlineButton':
+        markup.add(types.InlineKeyboardButton("Пример", callback_data='firstexampleInlineButton'))
+        theoryInlineButton_message = "Мы также имеем возможность передать команду на отображение специальных кнопок с предустановленными " \
+                                     "вариантами ответа:\n\n*InlineKeyboardMarkup()*\n\nКлиент Telegram, получив сообщение, отобразит пользователю нашу клавишу" \
+                                     "нажатие на которую сразу же отправит на сервер соответствующую команду с предустановленными " \
+                                     "вариантами ответа - очень похоже на ReplayKeyboardMarkup(), но более гибкие варианты использования. "
+        msg = bot.send_message(call.message.chat.id, theoryInlineButton_message, parse_mode='Markdown', reply_markup=markup)
+
+    elif call.data == 'firstexampleInlineButton':
+        exampleInlineButton_message = "Тут я написал простейший скрип играющий с пользователем в камень ножница бумага, именно такие игры встречаем в умных чайниках и термокружках 😅"
+        msg = bot.send_message(call.message.chat.id, exampleInlineButton_message, parse_mode='Markdown')
+        pic_5 = open("example6.jpg", "rb")
+        bot.send_photo(call.message.chat.id, pic_5)
+        example2InlineButton_message = "*3.* В функции мы подключаем форму и для кнопок - их может быть несколько по аналогии с прошлым объектом изучения\n" \
+                                       "*4.* Обратите внимание, что тут используется *callback_data=' '* - эта штука помогает нас связать со второй " \
+                                       "частью программы исполняющей наш запрос на игру\n" \
+                                       "*5.* Мы так же как и с *KeyboardButton()* должны обновлять запросы для отображения клавиш используя *replay_markup=*\n" \
+                                       "*9:* Остальная часть реализует саму игру и с минимальным знанием Python должна быть понятная всем читающим "
+
+        msg = bot.send_message(call.message.chat.id, example2InlineButton_message, parse_mode='Markdown')
+        msg = bot.send_message(call.message.chat.id, " 👉 /example6", parse_mode='Markdown')
+
+    elif call.data == 'exampleGameInlineButton':
+        Step = ['Камень', 'Ножницы', 'Бумага', '1️⃣ Раз!', '2️⃣ Два!', '3️⃣ Три!']
+        Massive = ['КАМЕНЬ', 'НОЖНИЦЫ', 'БУМАГА!']
+        for i in range(0, len(Step)):
+            msg = bot.send_message(call.message.chat.id, Step[i])
+            sleep(0.6)
+
+        x = random.randint(0, 2)
+        msg = bot.send_message(call.message.chat.id, '▶️' + Massive[x])
+        sleep(2)
+
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("🎮 Play", callback_data='exampleGameInlineButton'))
+        msg = bot.send_message(call.message.chat.id, 'Давай сыграем снова!', parse_mode="Markdown", reply_markup=markup)
+        markup2 = types.InlineKeyboardMarkup()
+        markup2.add(types.InlineKeyboardButton("Back", callback_data='exitexampleInlineButton'))
+        msg = bot.send_message(call.message.chat.id, 'Или продолжим учиться', parse_mode="Markdown", reply_markup=markup2)
+
+    elif call.data == 'exitexampleInlineButton':
+        msg = bot.send_message(call.message.chat.id, "✅ Конец близок, не сдавайся👇", reply_markup=markup)
     # Кнопки 6. InlineButton ----------------------------------------------------------------------
 
 
@@ -160,7 +252,33 @@ def step(call):
         msg = bot.send_message(call.message.chat.id, " Спасибо за оценку моей работы ❤️ ")
     # Кнопки для получения Донатов ----------------------------------------------------------------------
 
-# for example3, in shapter 'Бот отправляет'
+@bot.message_handler(commands=['example6'])
+def example6(message):
+    markup = types.InlineKeyboardMarkup()
+    markup.add(types.InlineKeyboardButton("🎮 Play", callback_data='exampleGameInlineButton'))
+    bot.send_message(message.chat.id, 'Сыграй с компьютером в игру:\n"Камень, ножницы, бумага"' , parse_mode="Markdown", reply_markup=markup)
+
+@bot.message_handler(commands=['example5'])
+def example5(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn1 = types.KeyboardButton("A")
+    btn2 = types.KeyboardButton("B")
+    btn3 = types.KeyboardButton("C")
+    btn4 = types.KeyboardButton("D")
+    markup.add(btn1, btn2, btn3, btn4)
+    question_messsage = 'В каком году было крещение Руси?\nA)  998\nB)  992\nC)  988\nD)  990'
+    bot.send_message(message.chat.id, question_messsage , parse_mode="Markdown", reply_markup=markup)
+
+@bot.message_handler(commands=['example4'])
+def example4(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    btn1 = types.KeyboardButton("Круто")
+    btn2 = types.KeyboardButton("Не очень, я устал")
+    btn3 = types.KeyboardButton("Как вернуться назад?")
+
+    markup.add(btn1, btn2, btn3)
+    bot.send_message(message.chat.id, 'Скажи мне, как у тебя дела?', parse_mode="Markdown", reply_markup=markup)
+
 @bot.message_handler(commands=['example3'])
 def example3(message):
     bot.send_message(message.chat.id, 'Вот тут мы отправляем текст')
@@ -175,7 +293,6 @@ def example3(message):
 
     bot.send_message(message.chat.id, "✅ Двигаемся вперед 💪")
 
-# for example1, in chapter 'Команды и функции'
 @bot.message_handler(commands=['example1'])
 def example1(message):
     markup = types.InlineKeyboardMarkup(row_width=1)
@@ -183,7 +300,6 @@ def example1(message):
     x = str(random.randint(1, 1000))
     bot.send_message(message.chat.id, x + "  try again /example1", reply_markup=markup)
 
-# for example2, in chapter 'Команды и функции'
 @bot.message_handler(commands=['example2'])
 def example2(message):
     markup = types.InlineKeyboardMarkup()
@@ -235,6 +351,9 @@ def start(message):
                 f"Надеюсь курс получился информативным и полезным для вас, буду рад, если в конце Вы заполните Google форму с обратной связью.\n" \
                 f" 🥳 *Hello, World - Давайте начинать!*"
     bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
+
+
+
 
 
 @bot.message_handler(content_types=['text'])
@@ -345,7 +464,6 @@ def mess(message):
         open_documentation(message)
     # 1. Вступление ----------------------------------------------------------------------
 
-
     # 2. Получение token ----------------------------------------------------------------------
     if get_message_bot == "Что такое token?":
         markup1 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
@@ -392,7 +510,7 @@ def mess(message):
         btn1 = types.KeyboardButton("KeyboardButton")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "Умея создавать команды - пришло время научиться бота реагировать на них с помощью клавишь"
+        first_message = "Пришло время научить бота отправлять данные в ответ"
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
 
@@ -408,10 +526,50 @@ def mess(message):
         btn1 = types.KeyboardButton("InlineButton")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "туть нужен текст"
+        first_message = "Одна из самых необычных возможностей Bot API — кастомизированные клавиатуры."
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
+
+        markup2 = types.InlineKeyboardMarkup(row_width=1)
+        markup2.add(types.InlineKeyboardButton("Теория", callback_data='theoryKeyboardButton'))
+        bot.send_message(message.chat.id, "👇", parse_mode='Markdown', reply_markup=markup2)
+        sleep(0.5)
+
+    # for example 1
+    if get_message_bot == "Круто":
+        bot.send_message(message.chat.id, "Молодец, так держать 💪")
+
+    elif get_message_bot == "Не очень, я устал":
+        bot.send_message(message.chat.id, "Сделай паузу, продолжишь завтра!")
+
+    elif get_message_bot == "Как вернуться назад?":
+        markup2 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn1 = types.KeyboardButton("InlineButton")
+        btn2 = types.KeyboardButton("Содержание")
+        markup2.add(btn1, btn2)
+        first_message = "Телепорт к примерам"
+        bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup2)
+
+        markup3 = types.InlineKeyboardMarkup()
+        markup3.add(types.InlineKeyboardButton("Телепорт 🔮", callback_data='exitfirstexampleKeyboardButton'))
+        bot.send_message(message.chat.id, "✨", reply_markup=markup3)
+    # for example 1
+
+    # for example 2
+    elif get_message_bot == "A":
+        bot.send_message(message.chat.id, "Ответ неверный")
+    elif get_message_bot == "B":
+        bot.send_message(message.chat.id, "Ты был близок")
+    elif get_message_bot == "D":
+        bot.send_message(message.chat.id, "Попытка не пытка...")
+    elif get_message_bot == "C":
+        bot.send_message(message.chat.id, "Верно, молодец!")
+        markup3 = types.InlineKeyboardMarkup()
+        markup3.add(types.InlineKeyboardButton("Телепорт 🔮", callback_data='exitsecondexampleKeyboardButton'))
+        bot.send_message(message.chat.id, "✨", reply_markup=markup3)
+    # for example 2
     # 5. KeyboardButton ----------------------------------------------------------------------
+
 
     # 6. InlineButton ----------------------------------------------------------------------
     if get_message_bot == "InlineButton":
@@ -419,9 +577,16 @@ def mess(message):
         btn1 = types.KeyboardButton("Подключаем к CRM")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "туть нужен текст"
+        first_message = "Помимо клавиатуры мы можем подключать и активно использовать inline кнопки"
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
+
+        markup2 = types.InlineKeyboardMarkup(row_width=1)
+        markup2.add(types.InlineKeyboardButton("Теория", callback_data='theoryInlineButton'))
+        bot.send_message(message.chat.id, "👇", parse_mode='Markdown', reply_markup=markup2)
+        sleep(0.5)
+
+
     # 6. InlineButton ----------------------------------------------------------------------
 
     # 7. Подключаем к CRM ----------------------------------------------------------------------
@@ -512,7 +677,7 @@ def mess(message):
         btn1 = types.KeyboardButton("KeyboardButton")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "Умея создавать команды - пришло время научиться бота реагировать на них с помощью клавишь"
+        first_message = "Пришло время научить бота отправлять данные в ответ"
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
 
@@ -526,17 +691,27 @@ def mess(message):
         btn1 = types.KeyboardButton("InlineButton")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "туть нужен текст"
+        first_message = "Одна из самых необычных возможностей Bot API — кастомизированные клавиатуры."
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
 
-    if get_message_bot =='6. InlineButton':
+        markup2 = types.InlineKeyboardMarkup(row_width=1)
+        markup2.add(types.InlineKeyboardButton("Теория", callback_data='theoryKeyboardButton'))
+        bot.send_message(message.chat.id, "👇", parse_mode='Markdown', reply_markup=markup2)
+        sleep(0.5)
+
+    if get_message_bot == "6. InlineButton":
         markup1 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn1 = types.KeyboardButton("Подключаем к CRM")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "туть нужен текст"
+        first_message = "Помимо клавиатуры мы можем подключать и активно использовать inline кнопки"
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
+        sleep(0.5)
+
+        markup2 = types.InlineKeyboardMarkup(row_width=1)
+        markup2.add(types.InlineKeyboardButton("Теория", callback_data='theoryInlineButton'))
+        bot.send_message(message.chat.id, "👇", parse_mode='Markdown', reply_markup=markup2)
         sleep(0.5)
 
     if get_message_bot =='7. Подключаем к CRM':

@@ -1,8 +1,8 @@
-
+import sqlite3
 import telebot
 from telebot import types
 from telebot import callback_data
-from time import sleep
+from time import *
 import random
 import emoji
 # 👉 🙏 👆 👇 😅 👋 🙌 ☺️ ❗ ️‼️ ✌️ 👌 ✊ 👨‍💻  🤖 😉  ☝️ ❤️ 💪
@@ -243,6 +243,91 @@ def step(call):
         msg = bot.send_message(call.message.chat.id, "✅ Конец близок, не сдавайся👇", reply_markup=markup)
     # Кнопки 6. InlineButton ----------------------------------------------------------------------
 
+    # 7. Кнопки Подключаем к CRM ----------------------------------------------------------------------
+    # AMO CRM
+    elif call.data == 'amo_crm':
+        markup = types.InlineKeyboardMarkup(row_width=1)
+        markup.add(types.InlineKeyboardButton("Далее", callback_data='amostep1'))
+        send_message = "ТЕКСТ 1"
+        bot.send_message(call.message.chat.id, send_message, parse_mode='Markdown', reply_markup=markup)
+
+    elif call.data == 'amostep1':
+        markup = types.InlineKeyboardMarkup(row_width=1)
+        markup.add(types.InlineKeyboardButton("Далее", callback_data='amostep2'))
+        send_message = "ТЕКСТ 2"
+        bot.send_message(call.message.chat.id, send_message, parse_mode='Markdown', reply_markup=markup)
+
+    elif call.data == 'amostep2':
+        markup = types.InlineKeyboardMarkup(row_width=3)
+        click1 = types.InlineKeyboardButton("amoCRM", callback_data='amo_crm')
+        click2 = types.InlineKeyboardButton("Jivo", callback_data='jivo_crm')
+        click3 = types.InlineKeyboardButton("Битрик24", callback_data='bitrix_crm')
+        click4 = types.InlineKeyboardButton("Закончим на CRM системах", callback_data='endcrm')
+        markup.add(click1, click2, click3, click4)
+        send_message = "ТЕКСТ 3\n" \
+                       "👋 Рад видеть, предприниматель!"
+        bot.send_message(call.message.chat.id, send_message, parse_mode='Markdown', reply_markup=markup)
+    # AMO CRM
+
+    # JIVO
+    elif call.data == 'jivo_crm':
+        markup = types.InlineKeyboardMarkup(row_width=1)
+        markup.add(types.InlineKeyboardButton("Далее", callback_data='jivostep1'))
+        send_message = "ТЕКСТ 1"
+        bot.send_message(call.message.chat.id, send_message, parse_mode='Markdown', reply_markup=markup)
+
+    elif call.data == 'jivostep1':
+        markup = types.InlineKeyboardMarkup(row_width=1)
+        markup.add(types.InlineKeyboardButton("Далее", callback_data='jivostep2'))
+        send_message = "ТЕКСТ 2"
+        bot.send_message(call.message.chat.id, send_message, parse_mode='Markdown', reply_markup=markup)
+
+    elif call.data == 'jivostep2':
+        markup = types.InlineKeyboardMarkup(row_width=3)
+        click1 = types.InlineKeyboardButton("amoCRM", callback_data='amo_crm')
+        click2 = types.InlineKeyboardButton("Jivo", callback_data='jivo_crm')
+        click3 = types.InlineKeyboardButton("Битрик24", callback_data='bitrix_crm')
+        click4 = types.InlineKeyboardButton("Закончим на CRM системах", callback_data='endcrm')
+        markup.add(click1, click2, click3, click4)
+        send_message = "ТЕКСТ 3\n" \
+                       "👋 Рад видеть, предприниматель!"
+        bot.send_message(call.message.chat.id, send_message, parse_mode='Markdown', reply_markup=markup)
+    # JIVO
+
+    # БИТРИКС
+    elif call.data == 'bitrix_crm':
+        markup = types.InlineKeyboardMarkup(row_width=1)
+        markup.add(types.InlineKeyboardButton("Далее", callback_data='bitrixstep1'))
+        send_message = "ТЕКСТ 1"
+        bot.send_message(call.message.chat.id, send_message, parse_mode='Markdown', reply_markup=markup)
+
+    elif call.data == 'bitrixstep1':
+        markup = types.InlineKeyboardMarkup(row_width=1)
+        markup.add(types.InlineKeyboardButton("Далее", callback_data='bitrixstep2'))
+        send_message = "ТЕКСТ 2"
+        bot.send_message(call.message.chat.id, send_message, parse_mode='Markdown', reply_markup=markup)
+
+    elif call.data == 'bitrixstep2':
+        markup = types.InlineKeyboardMarkup(row_width=3)
+        click1 = types.InlineKeyboardButton("amoCRM", callback_data='amo_crm')
+        click2 = types.InlineKeyboardButton("Jivo", callback_data='jivo_crm')
+        click3 = types.InlineKeyboardButton("Битрик24", callback_data='bitrix_crm')
+        click4 = types.InlineKeyboardButton("Закончим на CRM системах", callback_data='endcrm')
+        markup.add(click1, click2, click3, click4)
+        send_message = "ТЕКСТ 3\n" \
+                       "👋 Рад видеть, предприниматель!"
+        bot.send_message(call.message.chat.id, send_message, parse_mode='Markdown', reply_markup=markup)
+    # БИТРИКС
+
+    elif call.data == 'endcrm':
+        msg = bot.send_message(call.message.chat.id, "✅ Остался последний урок и скоро этот кошмар кончится 😅", reply_markup=markup)
+    # 7. Кнопки Подключаем к CRM ----------------------------------------------------------------------
+
+
+
+
+
+
 
     # Кнопки для получения Донатов ----------------------------------------------------------------------
     elif call.data == "finishtoken":
@@ -250,6 +335,26 @@ def step(call):
         pic_4 = open("donate.jpg", 'rb')
         bot.send_photo(call.message.chat.id, pic_4, reply_markup=markup)
         msg = bot.send_message(call.message.chat.id, " Спасибо за оценку моей работы ❤️ ")
+
+        sql = sqlite3.connect('analytics.db')
+        cursor = sql.cursor()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS donaters(
+                        id INTEGER,
+                        data TEXT,
+                        donate BOOLEAN
+                    )""")
+        sql.commit()
+
+        people_id = call.message.chat.id
+        cursor.execute(f"SELECT id FROM donaters WHERE id = {people_id}")
+        data = cursor.fetchone()
+
+        if data is None:
+            user_id = call.message.chat.id
+            today = ctime()
+            cursor.execute(f"INSERT INTO donaters VALUES(?, ?, ?);", (user_id, today, True))
+            sql.commit()
     # Кнопки для получения Донатов ----------------------------------------------------------------------
 
 @bot.message_handler(commands=['example6'])
@@ -342,6 +447,28 @@ def menu(message):
 #START
 @bot.message_handler(commands=['start'])
 def start(message):
+    sql = sqlite3.connect('analytics.db')
+    cursor = sql.cursor()
+
+    cursor.execute("""CREATE TABLE IF NOT EXISTS visitors(
+        id INTEGER,
+        data TEXT,
+        donate BOOLEAN
+    )""")
+    sql.commit()
+
+    people_id = message.chat.id
+    cursor.execute(f"SELECT id FROM visitors WHERE id = {people_id}")
+    data = cursor.fetchone()
+
+    if data is None:
+        user_id = message.chat.id
+        today = ctime()
+        cursor.execute(f"INSERT INTO visitors VALUES(?, ?, ?);", (user_id, today, False))
+        sql.commit()
+
+
+
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     btn1 = types.KeyboardButton('👨‍💻Начнем')
     btn2 = types.KeyboardButton('О авторе курса')
@@ -351,7 +478,6 @@ def start(message):
                 f"Надеюсь курс получился информативным и полезным для вас, буду рад, если в конце Вы заполните Google форму с обратной связью.\n" \
                 f" 🥳 *Hello, World - Давайте начинать!*"
     bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
-
 
 
 
@@ -595,8 +721,24 @@ def mess(message):
         btn1 = types.KeyboardButton("Работа с СБД")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "туть нужен текст"
+        first_message = "CRM - это система управления взаимоотношениями с клиентами предназначенное для автоматизации стратегий взаимодействия с клиентами, в частности " \
+                        "для повышения уровня продаж, оптимизации маркетинга и улучшения обслуживания клиентов путём сохранения информации о клиентах и истории взаимоотношений с ними, установления" \
+                        " и улучшения бизнес-процессов и последующего анализа результатов."
+
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
+        sleep(0.5)
+
+        markup2 = types.InlineKeyboardMarkup(row_width=3)
+        click1 = types.InlineKeyboardButton("amoCRM", callback_data='amo_crm')
+        click2 = types.InlineKeyboardButton("Jivo", callback_data='jivo_crm')
+        click3 = types.InlineKeyboardButton("Битрик24", callback_data='bitrix_crm')
+        markup2.add(click1, click2, click3)
+        CrmTheory_sendmessage = "В основном CRM систему используют для работы колл- центров, так вот представим ситуацию, " \
+                                "что вам нужен единый канал связи через телегарм на колл-центр в 30 человек. Обычный акаунт физического " \
+                                "лица вам не подойдет - подключаютя через ботов. Чащей всего подключение очень простое и не поддерживает всех " \
+                                "наших модных кнопочек - такие компании делают API, чтобы зарабатывать деньги на Ботах интегрированных в свою систему." \
+                                "Но не будем унывать и таки попробуем подключить некоторые (а их бесчисленное множество) сервисы к нашему боту ✌️"
+        bot.send_message(message.chat.id, CrmTheory_sendmessage, parse_mode='Markdown', reply_markup=markup2)
         sleep(0.5)
     # 7. Подключаем к CRM ----------------------------------------------------------------------
 
@@ -719,9 +861,27 @@ def mess(message):
         btn1 = types.KeyboardButton("Работа с СБД")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
-        first_message = "туть нужен текст"
+        first_message = "CRM - это система управления взаимоотношениями с клиентами предназначенное для автоматизации стратегий взаимодействия с клиентами, в частности " \
+                        "для повышения уровня продаж, оптимизации маркетинга и улучшения обслуживания клиентов путём сохранения информации о клиентах и истории взаимоотношений с ними, установления" \
+                        " и улучшения бизнес-процессов и последующего анализа результатов."
+
+
         bot.send_message(message.chat.id, first_message, parse_mode='Markdown', reply_markup=markup1)
         sleep(0.5)
+
+        markup2 = types.InlineKeyboardMarkup(row_width=3)
+        click1 = types.InlineKeyboardButton("amoCRM", callback_data='amo_crm')
+        click2 = types.InlineKeyboardButton("Jivo", callback_data='jivo_crm')
+        click3 = types.InlineKeyboardButton("Битрик24", callback_data='bitrix_crm')
+        markup2.add(click1, click2, click3)
+        CrmTheory_sendmessage = "В основном CRM систему используют для работы колл- центров, так вот представим ситуацию, " \
+                                "что вам нужен единый канал связи через телегарм на колл-центр в 30 человек. Обычный акаунт физического " \
+                                "лица вам не подойдет - подключаютя через ботов. Чащей всего подключение очень простое и не поддерживает всех " \
+                                "наших модных кнопочек - такие компании делают API, чтобы зарабатывать деньги на Ботах интегрированных в свою систему." \
+                                "Но не будем унывать и таки попробуем подключить некоторые (а их бесчисленное множество) сервисы к нашему боту ✌️"
+        bot.send_message(message.chat.id, CrmTheory_sendmessage, parse_mode='Markdown', reply_markup=markup2)
+        sleep(0.5)
+
 
     if get_message_bot =='8. Работа с СБД':
         markup1 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
@@ -744,6 +904,8 @@ def mess(message):
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("✅ donate",  callback_data="finishtoken"))
         bot.send_message(message.chat.id, "Я с радостью приму любую помощь 🙏", parse_mode="Markdown", reply_markup=markup)
+
+
     # The end ----------------------------------------------------------------------
 
 bot.polling(none_stop=True)

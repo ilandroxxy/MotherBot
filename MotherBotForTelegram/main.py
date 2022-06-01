@@ -9,7 +9,12 @@ import emoji
 
 bot = telebot.TeleBot('5430380851:AAE70eeR3jFdxuM_BlWjWLNgsDEGhWRqC7o')
 
-
+M = [[1,2,3]]
+print(M)
+M.append([4,5,6])
+print(M)
+M[1].append(5)
+print(M)
 # ссылка для "Как Python связан с Telegram?"
 @bot.message_handler(commands=['documentation'])
 def open_documentation(message):
@@ -336,25 +341,6 @@ def step(call):
         bot.send_photo(call.message.chat.id, pic_4, reply_markup=markup)
         msg = bot.send_message(call.message.chat.id, " Спасибо за оценку моей работы ❤️ ")
 
-        sql = sqlite3.connect('analytics.db')
-        cursor = sql.cursor()
-
-        cursor.execute("""CREATE TABLE IF NOT EXISTS donaters(
-                        id INTEGER,
-                        data TEXT,
-                        donate BOOLEAN
-                    )""")
-        sql.commit()
-
-        people_id = call.message.chat.id
-        cursor.execute(f"SELECT id FROM donaters WHERE id = {people_id}")
-        data = cursor.fetchone()
-
-        if data is None:
-            user_id = call.message.chat.id
-            today = ctime()
-            cursor.execute(f"INSERT INTO donaters VALUES(?, ?, ?);", (user_id, today, True))
-            sql.commit()
     # Кнопки для получения Донатов ----------------------------------------------------------------------
 
 @bot.message_handler(commands=['example6'])
@@ -447,27 +433,6 @@ def menu(message):
 #START
 @bot.message_handler(commands=['start'])
 def start(message):
-    sql = sqlite3.connect('analytics.db')
-    cursor = sql.cursor()
-
-    cursor.execute("""CREATE TABLE IF NOT EXISTS visitors(
-        id INTEGER,
-        data TEXT,
-        donate BOOLEAN
-    )""")
-    sql.commit()
-
-    people_id = message.chat.id
-    cursor.execute(f"SELECT id FROM visitors WHERE id = {people_id}")
-    data = cursor.fetchone()
-
-    if data is None:
-        user_id = message.chat.id
-        today = ctime()
-        cursor.execute(f"INSERT INTO visitors VALUES(?, ?, ?);", (user_id, today, False))
-        sql.commit()
-
-
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     btn1 = types.KeyboardButton('👨‍💻Начнем')
@@ -481,8 +446,132 @@ def start(message):
 
 
 
+# СУБД для подсчета независимых кликов по кнопке
+def analytics(func: callable):
+    total_users = 0
+    users = [['total_users', 'user_id', 'includ', 'token', 'commands', 'botsend', 'keyboard', 'inline', 'crm', 'asql', 'donate']]
+
+    def anlytics_wrapper(message):
+        nonlocal users, total_users
+
+
+        sql = sqlite3.connect('analytics.db')
+        cursor = sql.cursor()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS active(
+                                total_users INTEGER,
+                                id INTEGER,
+                                Include BOOLEAN,
+                                Token BOOLEAN,
+                                Commands BOOLEAN,
+                                BotSend BOOLEAN,
+                                Keyboard BOOLEAN,
+                                Inline BOOLEAN,
+                                CRM BOOLEAN,
+                                SQL BOOLEAN,
+                                Donate BOOLEAN
+                            )""")
+
+
+        people_id = message.chat.id
+        cursor.execute(f"SELECT id FROM active WHERE id = {people_id}")
+        data = cursor.fetchone()
+
+        if data is None:
+            user_id = message.chat.id
+            total_users += 1
+
+
+            cursor.execute(f"INSERT INTO active VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", (total_users, user_id, False, False, False, False, False, False, False, False, False))
+            sql.commit()
+        else:
+
+            cursor.execute(f"DELETE FROM active WHERE id = {people_id}")
+            user_id = message.chat.id
+            users.append([total_users, user_id, False, False, False, False, False, False, False, False, False])
+
+            if message.text == "👨‍💻Начнем":
+                users[total_users][2] = True
+
+            if message.text == "Что такое token?":
+                users[total_users][3] = True
+
+            if message.text == "Команды и функции":
+                users[total_users][4] = True
+
+            if message.text == "Бот отправляет":
+                users[total_users][5] = True
+
+            if message.text == "KeyboardButton":
+                users[total_users][6] = True
+
+            if message.text == "InlineButton":
+                users[total_users][7] = True
+
+            if message.text == "Подключаем к CRM":
+                users[total_users][8] = True
+
+            if message.text == "Работа с СБД":
+                users[total_users][9] = True
+
+            if message.text == "Поблагодарить":
+                users[total_users][10] = True
+
+            cursor.execute(f"INSERT INTO active VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", (total_users, user_id, users[total_users][2], users[total_users][3], users[total_users][4], users[total_users][5], users[total_users][6], users[total_users][7], users[total_users][8], users[total_users][9], users[total_users][10]))
+            sql.commit()
+
+            cursor.close()
+
+        return func(message)
+    return anlytics_wrapper
+
+# скрытая команда статистики доступная только по моему ID пользователя
+@bot.message_handler(commands=['statistics'])
+def statistics(message):
+    bot.send_message(message.chat.id, "Введите код доступа: ")
+
+    if message.chat.id == 438879394:
+        sql = sqlite3.connect('analytics.db')
+        cursor = sql.cursor()
+
+        sqlite_select_query = """SELECT * from active"""
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+
+        bot.send_message(message.chat.id, "Всего пользователей:  " + str(len(records)) + "\nВывод статистики по кнопкам:")
+        count2 = count3 = count4 = count5 = count6 = count7 = count8 = count9 = count10 = 0
+        for row in records:
+            if row[2] == True:
+                count2 += 1
+            if row[3] == True:
+                count3 += 1
+            if row[4] == True:
+                count4 += 1
+            if row[5] == True:
+                count5 += 1
+            if row[6] == True:
+                count6 += 1
+            if row[7] == True:
+                count7 += 1
+            if row[8] == True:
+                count8 += 1
+            if row[9] == True:
+                count9 += 1
+            if row[10] == True:
+                count10 += 1
+        statistics_message = 'Нажатий на клавиши: \n1) 👨‍💻Начнем:  *{}* \n2) Что такое token?:  *{}* \n3) Команды и функции:  *{}*' \
+                             '\n4) Бот отправляет:  *{}*\n5) KeyboardButton:  *{}*\n6) InlineButton:  *{}*\n7) Подключаем к CRM:  *{}*' \
+                             '\n8) Работа с СБД:  *{}*\n9) Поблагодарить:  *{}*'.format(count2, count3, count4, count5, count6, count7, count8, count9, count10)
+
+        bot.send_message(message.chat.id, statistics_message, parse_mode="Markdown")
+        cursor.close()
+    else:
+        bot.send_message(message.chat.id, "Извините, у вас нет прав доступа: ")
+
+
 
 @bot.message_handler(content_types=['text'])
+@analytics
 def mess(message):
     get_message_bot = message.text.strip()
 

@@ -5,16 +5,10 @@ from telebot import callback_data
 from time import *
 import random
 import emoji
-# 👉 🙏 👆 👇 😅 👋 🙌 ☺️ ❗ ️‼️ ✌️ 👌 ✊ 👨‍💻  🤖 😉  ☝️ ❤️ 💪
 
+# 👉 🙏 👆 👇 😅 👋 🙌 ☺️ ❗ ️‼️ ✌️ 👌 ✊ 👨‍💻  🤖 😉  ☝️ ❤️ 💪
 bot = telebot.TeleBot('5430380851:AAE70eeR3jFdxuM_BlWjWLNgsDEGhWRqC7o')
 
-M = [[1,2,3]]
-print(M)
-M.append([4,5,6])
-print(M)
-M[1].append(5)
-print(M)
 # ссылка для "Как Python связан с Telegram?"
 @bot.message_handler(commands=['documentation'])
 def open_documentation(message):
@@ -95,7 +89,9 @@ def step(call):
         firstexamplestart_message = "Например эта простейшая команда выводит на экран рандомное число:"
         msg = bot.send_message(call.message.chat.id, firstexamplestart_message, parse_mode='Markdown')
         pic_5 = open("example1.jpg", "rb")
-        bot.send_photo(call.message.chat.id,pic_5)
+        markup.add(types.InlineKeyboardButton("Ссылка на код программы", url='https://github.com/ilandroxxy/TelegramBotTemplates_MotherBot/blob/main/example1.py'))
+        bot.send_photo(call.message.chat.id, pic_5, reply_markup=markup)
+
         firstexample2start_message = "*1.* Мы задаем название команды.\n" \
                                      "*2.* Начинаем писать функцию для ее обработки.\n" \
                                      "*3.* Генерим рандомное число от 1 до 1000\n" \
@@ -108,7 +104,8 @@ def step(call):
                                      "и возвращаем факториал от числа"
         msg = bot.send_message(call.message.chat.id, secondexamplestart_message, parse_mode='Markdown')
         pic_6 = open("example2.jpg", "rb")
-        bot.send_photo(call.message.chat.id, pic_6)
+        markup.add(types.InlineKeyboardButton("Ссылка на код программы", url='https://github.com/ilandroxxy/TelegramBotTemplates_MotherBot/blob/main/example2.py'))
+        bot.send_photo(call.message.chat.id, pic_6, reply_markup=markup)
         secondexample2start_message = "*1-2.* Строчки аналогичны предыдущему примеру\n" \
                                      "*3.* Специальное обращение бота, когда он отвечает на сообщение пользователя\n" \
                                      "*6.* Мы создаем фунцию обрабатывающую текст введенный пользователем \n" \
@@ -140,7 +137,9 @@ def step(call):
         examplebotsend_message = "Вот примеры простейших объектов которые бот может отправлять пользователю:"
         msg = bot.send_message(call.message.chat.id,  examplebotsend_message, parse_mode='Markdown')
         pic_5 = open("example3.jpg", "rb")
-        bot.send_photo(call.message.chat.id, pic_5)
+        markup.add(types.InlineKeyboardButton("Ссылка на код программы",
+                                              url='https://github.com/ilandroxxy/TelegramBotTemplates_MotherBot/blob/main/example3.py'))
+        bot.send_photo(call.message.chat.id, pic_5, reply_markup=markup)
         example2botsend_message = "*3.* Отправляем текст пользователю \n" \
                                      "*5-6.* Открываем картинку из проекта и отправляем ее пользователю\n" \
                                      "*8.* Бот отправляет заготовленный заранее контакт\n" \
@@ -164,7 +163,9 @@ def step(call):
         exampleKetboardButton_message = "В этом примере мы просто создаем две клавиши и возвращаем те или иные сообщения в зависимости от нажатия."
         msg = bot.send_message(call.message.chat.id, exampleKetboardButton_message, parse_mode='Markdown')
         pic_5 = open("example4.jpg", "rb")
-        bot.send_photo(call.message.chat.id, pic_5)
+        markup.add(types.InlineKeyboardButton("Ссылка на код программы",
+                                              url='https://github.com/ilandroxxy/TelegramBotTemplates_MotherBot/blob/main/example4.py'))
+        bot.send_photo(call.message.chat.id, pic_5, reply_markup=markup)
         example2KetboardButton_message = "*3.* Мы объявляем форму для клавиатуры и задаем размер (кол-во клавишь) на экране\n" \
                                   "*4-5.* Создаем сами клавиши через переменные\n" \
                                   "*7-8.* Добавляем в единую форму и просим бота отобразить их через *replay_markup=имя формы*, " \
@@ -186,7 +187,9 @@ def step(call):
         exampleKetboardButton_message = "А это пример создания мини викторины."
         msg = bot.send_message(call.message.chat.id, exampleKetboardButton_message, parse_mode='Markdown')
         pic_5 = open("example5.jpg", "rb")
-        bot.send_photo(call.message.chat.id, pic_5)
+        markup.add(types.InlineKeyboardButton("Ссылка на код программы",
+                                              url='https://github.com/ilandroxxy/TelegramBotTemplates_MotherBot/blob/main/example5.py'))
+        bot.send_photo(call.message.chat.id, pic_5, reply_markup=markup)
         example2KetboardButton_message = "В целом эта часть кода не требует пояснений кроме совей последней строчки, " \
                                          'в 10 строке есть параметр *parse_mode=* он позволяет выбрать форматирование' \
                                          'текста, поддерживаются два варианта:\n1. *"Markdown"*\n2. *"HTML"*\n'
@@ -216,7 +219,9 @@ def step(call):
         exampleInlineButton_message = "Тут я написал простейший скрип играющий с пользователем в камень ножница бумага, именно такие игры встречаем в умных чайниках и термокружках 😅"
         msg = bot.send_message(call.message.chat.id, exampleInlineButton_message, parse_mode='Markdown')
         pic_5 = open("example6.jpg", "rb")
-        bot.send_photo(call.message.chat.id, pic_5)
+        markup.add(types.InlineKeyboardButton("Ссылка на код программы",
+                                              url='https://github.com/ilandroxxy/TelegramBotTemplates_MotherBot/blob/main/example6.py'))
+        bot.send_photo(call.message.chat.id, pic_5, reply_markup=markup)
         example2InlineButton_message = "*3.* В функции мы подключаем форму и для кнопок - их может быть несколько по аналогии с прошлым объектом изучения\n" \
                                        "*4.* Обратите внимание, что тут используется *callback_data=' '* - эта штука помогает нас связать со второй " \
                                        "частью программы исполняющей наш запрос на игру\n" \
@@ -384,12 +389,7 @@ def example3(message):
 
     bot.send_message(message.chat.id, "✅ Двигаемся вперед 💪")
 
-@bot.message_handler(commands=['example1'])
-def example1(message):
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    markup.add(types.InlineKeyboardButton("🙏 Вернуться назад", callback_data='exitexample1'))
-    x = str(random.randint(1, 1000))
-    bot.send_message(message.chat.id, x + "  try again /example1", reply_markup=markup)
+
 
 @bot.message_handler(commands=['example2'])
 def example2(message):
@@ -409,10 +409,14 @@ def example2(message):
             bot.send_message(message.chat.id, f'Факториал числа: {x} = {res}', reply_markup=markup)
         else:
             bot.reply_to(message, 'Я в такие игры не играю.. 👉 /example2 ')
-
-
-
     bot.register_next_step_handler(message, message_input)
+
+@bot.message_handler(commands=['example1'])
+def example1(message):
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    markup.add(types.InlineKeyboardButton("🙏 Вернуться назад", callback_data='exitexample1'))
+    x = str(random.randint(1, 1000))
+    bot.send_message(message.chat.id, x + "  try again /example1", reply_markup=markup)
 
 #MENU
 @bot.message_handler(commands=['menu'])
@@ -528,7 +532,6 @@ def analytics(func: callable):
 # скрытая команда статистики доступная только по моему ID пользователя
 @bot.message_handler(commands=['statistics'])
 def statistics(message):
-    bot.send_message(message.chat.id, "Введите код доступа: ")
 
     if message.chat.id == 438879394:
         sql = sqlite3.connect('analytics.db')
@@ -869,7 +872,7 @@ def mess(message):
 
     if get_message_bot == '2. Получение token':
         markup1 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn1 = types.KeyboardButton("Команда start")
+        btn1 = types.KeyboardButton("Команды и функции")
         btn2 = types.KeyboardButton("Содержание")
         markup1.add(btn1, btn2)
         first_message = "Чтобы связать нашу программу и бота по сети, нужен token бота.\n" \
@@ -993,8 +996,6 @@ def mess(message):
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("✅ donate",  callback_data="finishtoken"))
         bot.send_message(message.chat.id, "Я с радостью приму любую помощь 🙏", parse_mode="Markdown", reply_markup=markup)
-
-
     # The end ----------------------------------------------------------------------
 
 bot.polling(none_stop=True)

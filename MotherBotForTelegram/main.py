@@ -7,7 +7,7 @@ import random
 import emoji
 
 # 👉 🙏 👆 👇 😅 👋 🙌 ☺️ ❗ ️‼️ ✌️ 👌 ✊ 👨‍💻  🤖 😉  ☝️ ❤️ 💪
-bot = telebot.TeleBot('5430380851:AAE70eeR3jFdxuM_BlWjWLNgsDEGhWRqC7o')
+bot = telebot.TeleBot('5430380851:AAHJWM-_fgfLY2AuHayIvs7rtsvt8YmTNqk')
 
 # ссылка для "Как Python связан с Telegram?"
 @bot.message_handler(commands=['documentation'])
@@ -115,7 +115,7 @@ def step(call):
                                       "*10-13.* И вычисляем факториал числа простейшим образом\n" \
                                       "*14-15.* Иначе просим пользователя перезапустить команду"
         msg = bot.send_message(call.message.chat.id, secondexample2start_message, parse_mode='Markdown')
-        msg = bot.send_message(call.message.chat.id, "touch me 👉 /example2", parse_mode='Markdown', reply_markup=markup)
+        msg = bot.send_message(call.message.chat.id, "touch me 👉 /example2", parse_mode='Markdown')
 
     elif call.data == 'exitexample1':
         markup.add(types.InlineKeyboardButton("Пример 2", callback_data='secondexamplestart'))
@@ -389,8 +389,6 @@ def example3(message):
 
     bot.send_message(message.chat.id, "✅ Двигаемся вперед 💪")
 
-
-
 @bot.message_handler(commands=['example2'])
 def example2(message):
     markup = types.InlineKeyboardMarkup()
@@ -418,35 +416,7 @@ def example1(message):
     x = str(random.randint(1, 1000))
     bot.send_message(message.chat.id, x + "  try again /example1", reply_markup=markup)
 
-#MENU
-@bot.message_handler(commands=['menu'])
-def menu(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    btn1 = types.KeyboardButton('1. Вступление')
-    btn2 = types.KeyboardButton('2. Получение token')
-    btn3 = types.KeyboardButton('3. Команда start')
-    btn4 = types.KeyboardButton('4. Бот отправляет')
-    btn5 = types.KeyboardButton('5. KeyboardButton')
-    btn6 = types.KeyboardButton('6. InlineButton')
-    btn7 = types.KeyboardButton('7. Подключаем к CRM')
-    btn8 = types.KeyboardButton('8. Работа с СБД')
-    btn9 = types.KeyboardButton('Содержание')
-    markup.add(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9)
-    bot.send_dice(message.chat.id, reply_markup=markup)
 
-#START
-@bot.message_handler(commands=['start'])
-def start(message):
-
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    btn1 = types.KeyboardButton('👨‍💻Начнем')
-    btn2 = types.KeyboardButton('О авторе курса')
-    btn3 = types.KeyboardButton('Содержание')
-    markup.add(btn1, btn2, btn3)
-    send_mess = f"👋 Доброго времени суток, *{message.from_user.first_name}*!\n\nРад Вас приветствовать на моем авторском курсе *'PyTelegramBotAPI'*.\n\n" \
-                f"Надеюсь курс получился информативным и полезным для вас, буду рад, если в конце Вы заполните Google форму с обратной связью.\n" \
-                f" 🥳 *Hello, World - Давайте начинать!*"
-    bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
 
 
 
@@ -475,7 +445,7 @@ def analytics(func: callable):
                                 SQL BOOLEAN,
                                 Donate BOOLEAN
                             )""")
-
+        sql.commit()
 
         people_id = message.chat.id
         cursor.execute(f"SELECT id FROM active WHERE id = {people_id}")
@@ -489,7 +459,6 @@ def analytics(func: callable):
             cursor.execute(f"INSERT INTO active VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", (total_users, user_id, False, False, False, False, False, False, False, False, False))
             sql.commit()
         else:
-
             cursor.execute(f"DELETE FROM active WHERE id = {people_id}")
             user_id = message.chat.id
             users.append([total_users, user_id, False, False, False, False, False, False, False, False, False])
@@ -529,7 +498,7 @@ def analytics(func: callable):
         return func(message)
     return anlytics_wrapper
 
-# скрытая команда статистики доступная только по моему ID пользователя
+# Скрытая команда статистики доступная только по моему ID пользователя
 @bot.message_handler(commands=['statistics'])
 def statistics(message):
 
@@ -573,10 +542,193 @@ def statistics(message):
 
 
 
+
+
+
+#START
+@bot.message_handler(commands=['start'])
+def start(message):
+
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn1 = types.KeyboardButton('👨‍💻Начнем')
+    btn2 = types.KeyboardButton('О авторе курса')
+    btn3 = types.KeyboardButton('Содержание')
+    markup.add(btn1, btn2, btn3)
+    send_mess = f"👋 Доброго времени суток, *{message.from_user.first_name}*!\n\nРад Вас приветствовать на моем авторском курсе *'PyTelegramBotAPI'*.\n\n" \
+                f"Надеюсь курс получился информативным и полезным для вас, буду рад, если в конце Вы заполните Google форму с обратной связью.\n" \
+                f" 🥳 *Hello, World - Давайте начинать!*"
+    bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
+
+#MENU
+@bot.message_handler(commands=['menu'])
+def menu(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn1 = types.KeyboardButton('1. Вступление')
+    btn2 = types.KeyboardButton('2. Получение token')
+    btn3 = types.KeyboardButton('3. Команда start')
+    btn4 = types.KeyboardButton('4. Бот отправляет')
+    btn5 = types.KeyboardButton('5. KeyboardButton')
+    btn6 = types.KeyboardButton('6. InlineButton')
+    btn7 = types.KeyboardButton('7. Подключаем к CRM')
+    btn8 = types.KeyboardButton('8. Работа с СБД')
+    btn9 = types.KeyboardButton('Содержание')
+    markup.add(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9)
+    bot.send_message(message.chat.id, "👇 Открыл содержание курса, не благодарите" ,reply_markup=markup)
+
+#EXAMPLES
+@bot.message_handler(commands=['examples'])
+def examples(message):
+    send_message = "*Здесь собраны все Примеры с курса:*\n\n" \
+                   '/example1 - from the "Команды и отзывы"\nКоманда выводит рандомное число пользователю\n\n' \
+                   '/example2 - from the "Команды и отзывы"\nСчитаем факториал числа введенного пользователем\n\n' \
+                   '/example3 - from the "Бот отправляет"\nБот отправляет простейшие объекты пользователю\n\n'\
+                   '/example4 - from the "KeyboardButton"\nПример реализации простейшей клавиатуры\n\n' \
+                   '/example5 - from the "KeyboardButton"\nСоздание мини викторины\n\n' \
+                   '/example6 - from the "InlineButton"\nПростейший скрипт игры "Камень, ножницы,бумага"\n\n'
+    bot.send_message(message.chat.id, send_message, parse_mode="Markdown")
+
+#HELP
+@bot.message_handler(commands=['help'])
+def help(message):
+    send_message = "I can help you create and manage Telegram bots. If you're new to the Bot API, please see the manual.\n\n" \
+                   "/constructor - *Конструктор Ботов*\n\n" \
+                   "You can control me by sending these commands:\n\n*Commands*\n/start - start page of this course\n/menu - navigating the course\n" \
+                   "/examples - all examples from the course\n" \
+                   "/templates - get a bot template for your task\n\n" \
+                   "*Examples*\n" \
+                   '/example1 - from the "Команды и отзывы"\n' \
+                   '/example2 - from the "Команды и отзывы"\n' \
+                   '/example3 - from the "Бот отправляет"\n'\
+                   '/example4 - from the "KeyboardButton"\n' \
+                   '/example5 - from the "KeyboardButton"\n' \
+                   '/example6 - from the "InlineButton"\n'
+    bot.send_message(message.chat.id, send_message, parse_mode="Markdown")
+
+#CONSTRUCTOR
+@bot.message_handler(commands=['constructor'])
+def constructor(message):
+    sendhello_message = f"👋 Доброго времени суток, *{message.from_user.first_name}*!\n\nРад *Вам* представить мой *Конструктор Ботов*, " \
+                        f"просто выбери свои сценарии использования и получи ссылку с описание на готовый шаблон "
+    bot.send_message(message.chat.id, sendhello_message, parse_mode="Markdown")
+
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn1 = types.KeyboardButton('ИП')
+    btn2 = types.KeyboardButton('ООО')
+    btn3 = types.KeyboardButton('Самозанятый')
+    markup.add(btn1, btn2, btn3)
+    send_mess = f"*{message.from_user.first_name}*, Вы у нас.."
+    bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
+
+#TEMPLATES
+@bot.message_handler(commands=['templates'])
+def templates(message):
+    send_message = "*Здесь собраны все шаблоны ботов:*\n\n" \
+                   '/template1 - шаблон для *Записи клиента*\n\n' \
+                   '/template2 - шаблон для *Каталога товаров*\n\n' \
+                   '/template3 - шаблон для *Лендинга*\n\n' \
+                   '/template4 - шаблон для *Вопросов/Ответ*\n\n' \
+                   '/template5 - шаблон для *Тех. поддержки*\n\n'
+    bot.send_message(message.chat.id, send_message, parse_mode="Markdown")
+
+
+
+
+
 @bot.message_handler(content_types=['text'])
 @analytics
 def mess(message):
     get_message_bot = message.text.strip()
+
+
+    #TEMPLATES ------------------------------------------------------------------------
+    if get_message_bot == "ИП":
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        btn1 = types.KeyboardButton('Сфера услуг')
+        btn2 = types.KeyboardButton('Продажи курсов')
+        btn3 = types.KeyboardButton('Магазин товаров')
+        btn4 = types.KeyboardButton('Блогер')
+        markup.add(btn1, btn2, btn3, btn4)
+        send_mess = "Пора углубляться в суть проблемы"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
+
+    if get_message_bot == "ООО":
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn1 = types.KeyboardButton('Сфера услуг')
+        btn2 = types.KeyboardButton('Магазин товаров')
+        markup.add(btn1, btn2)
+        send_mess = "Пора углубляться в суть проблемы"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
+
+
+    if get_message_bot == "Самозанятый":
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        btn1 = types.KeyboardButton('Сфера услуг')
+        btn2 = types.KeyboardButton('Продажа курсов')
+        btn3 = types.KeyboardButton('Блогер')
+        markup.add(btn1, btn2, btn3)
+        send_mess = "Пора углубляться в суть проблемы"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
+
+    # STEP 2 --------------------------------
+    if get_message_bot == "Сфера услуг":
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn1 = types.KeyboardButton('Запись клиентов')
+        btn2 = types.KeyboardButton('Нужен Лендинг')
+        markup.add(btn1, btn2)
+        send_mess = "2.1"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
+
+    if get_message_bot == "Продажа курсов":
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn1 = types.KeyboardButton('Каталог товаров')
+        btn2 = types.KeyboardButton('Нужен Лендинг')
+        btn3 = types.KeyboardButton('Ответить на вопросы')
+        markup.add(btn1, btn2, btn3)
+        send_mess = "2.2"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
+
+    if get_message_bot == "Магазин товаров":
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn1 = types.KeyboardButton('Каталог товаров')
+        btn2 = types.KeyboardButton('Техническая поддержка')
+        btn3 = types.KeyboardButton('Ответить на вопросы')
+        markup.add(btn1, btn2, btn3)
+        send_mess = "2.3"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
+
+    if get_message_bot == "Блогер":
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn1 = types.KeyboardButton('Каталог товаров')
+        btn2 = types.KeyboardButton('Нужен Лендинг')
+        btn3 = types.KeyboardButton('Ответить на вопросы')
+        markup.add(btn1, btn2, btn3)
+        send_mess = "2.4"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown', reply_markup=markup)
+    # STEP 2 --------------------------------
+
+    # STEP 3 --------------------------------
+    if get_message_bot == "Запись клиентов":
+        send_mess = "3.1"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown')
+
+    if get_message_bot == "Каталог товаров":
+        send_mess = "3.2"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown')
+
+    if get_message_bot == "Нужен Лендинг":
+        send_mess = "3.3"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown')
+
+    if get_message_bot == "Ответить на вопросы":
+        send_mess = "3.4"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown')
+
+    if get_message_bot == "Техническая поддержка":
+        send_mess = "3.5"
+        bot.send_message(message.chat.id, send_mess, parse_mode='Markdown')
+    # STEP 3 --------------------------------
+
+    # TEMPLATES ------------------------------------------------------------------------
 
     # 1. Вступление ----------------------------------------------------------------------
     if get_message_bot == "👨‍💻Начнем":
